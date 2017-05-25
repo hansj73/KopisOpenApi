@@ -85,12 +85,14 @@ public class KopisApiBatch {
     {
     	  String Detail_apiXml="";
     	  StringBuffer sb = new StringBuffer();
-    	  String period="";
     	  
     	  try{
            	stmt = con.createStatement();
               //데이터를 가져온다.
-           	rs = stmt.executeQuery("select count(*) count from OPENAPI_METADATA where sub_title='"+mt20id+"'");
+           	/**
+           	 * type 06  공연
+           	 */
+           	rs = stmt.executeQuery("select count(*) count from OPENAPI_METADATA where sub_title='"+mt20id+"' and type='06'");
               
               int cnt=(rs.next()==true)?rs.getInt("count"):-1;
               
@@ -102,25 +104,44 @@ public class KopisApiBatch {
               	
               	ArrayList<KopisApiDto> Api_detail = (ArrayList<KopisApiDto>) KopisApiExplorer.processDocumentDetail(Detail_apiXml);
               	
-              	String ChgTagSrc=KopisApiExplorer.TagImageSrc(Api_detail.get(0).getStyurl1());
+              	/** prfnm 공연 제목 특수 문자 unicode로 치환**/
+              	String title = KopisApiExplorer.getUnicodeChage(Api_detail.get(0).getPrfnm());
               	
+              	/** DESCRIPTION  이미지 url 추가하기 ***/
+              	String description=KopisApiExplorer.TagImageSrc(Api_detail.get(0).getStyurl1());
               	
-              	period=Api_detail.get(0).getPrfpdfrom()+"~"+Api_detail.get(0).getPrfpdto();
+              	/** 공연 기간 ***/
+              	String period=Api_detail.get(0).getPrfpdfrom()+"~"+Api_detail.get(0).getPrfpdto();
               	
-              	 String cultureUrl=getProperty("cultureSaveUrl");
-    		     String kopisPosterUrl=getProperty("kopisPosterUrl");
+    		    /** post url 변경 에 입력***/
+              	
+              	String cultureUrl=getProperty("cultureSaveUrl");
+              	String kopisPosterUrl=getProperty("kopisPosterUrl");
               	
               	String posterUrl=Api_detail.get(0).getPoster().replaceAll(kopisPosterUrl, cultureUrl);
+              	
+              	/** 장르 코드변환***/
+              	String genreCode=KopisApiExplorer.getGenreCode(Api_detail.get(0).getGenrenm()); // 장르 코드 분류추가 
               			
               	sb.append("INSERT INTO OPENAPI_METADATA");
-              	sb.append("(SEQ,TITLE,SUB_TITLE,REG_DATE,EXTENT,DESCRIPTION,RIGHTS,CHARGE,VENUE,PERIOD,TIME,REFERENCE_IDENTIFIER_ORG,GENRE)");
+              	sb.append("(");
+              	sb.append("SEQ,TITLE,SUB_TITLE");
+              	sb.append(",REG_DATE,CREATED_DATE,TYPE");
+              	sb.append(",EXTENT,DESCRIPTION,RIGHTS");
+              	sb.append(",GRADE,CHARGE,VENUE");
+              	sb.append(",PERIOD,TIME,REFERENCE_IDENTIFIER_ORG");
+              	sb.append(",APPROVAL,GENRE");
+              	sb.append(")");
               	sb.append("VALUES");
-              	sb.append("(OPENAPI_METADATA_SEQUENCE.NEXTVAL,'"+Api_detail.get(0).getPrfnm()+"',");
-              	sb.append("'"+mt20id+"',sysdate,'"+Api_detail.get(0).getDtguidance()+"',");
-              	sb.append("'"+ChgTagSrc+"','"+Api_detail.get(0).getEntrpsnm()+"','"+Api_detail.get(0).getPcseguidance()+"',");
-              	sb.append("'"+shprfnmfct+"','"+period+"','"+Api_detail.get(0).getPrfruntime()+"',");
-              	sb.append("'"+posterUrl+"','"+Api_detail.get(0).getGenrenm()+"')");
+              	sb.append("(");
+              	sb.append("OPENAPI_METADATA_SEQUENCE.NEXTVAL,'"+title+"','"+mt20id+"'");
+              	sb.append(",sysdate,sysdate,'06'");
+              	sb.append(",'"+Api_detail.get(0).getPrfruntime()+"','"+description+"','"+Api_detail.get(0).getEntrpsnm()+"'");
+              	sb.append(",'"+Api_detail.get(0).getPrfage()+"','"+Api_detail.get(0).getPcseguidance()+"','"+Api_detail.get(0).getFcltynm()+"'");
+              	sb.append(",'"+period+"','"+Api_detail.get(0).getDtguidance()+"','"+posterUrl+"'");
+              	sb.append(",'W','"+genreCode+"')");
                           	  
+              	/*System.out.println("::SQL:::"+sb.toString());*/
               	stmt.executeUpdate(sb.toString());
               	
               	try {
@@ -187,8 +208,6 @@ public class KopisApiBatch {
 		 if(list_cnt >0 ){
 			  closeConnection();
 		 }
-		 
-		 
 		 
 		 return list_cnt;
 				

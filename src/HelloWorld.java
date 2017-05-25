@@ -25,11 +25,11 @@ public class HelloWorld {
 		
 		
 
-         String artOrgName="\uc608\uc220\uc758\uc804\ub2f9";
+        /* String artOrgName="\uc608\uc220\uc758\uc804\ub2f9";
          
         String aa= new String(artOrgName.getBytes("ISO-8859-1"), "UTF-8");
         
-        System.out.println(":::aa:::"+unicodeConvert(artOrgName));
+        System.out.println(":::aa:::"+unicodeConvert(artOrgName));*/
 
 		
 		     //String poster="http://www.kopis.or.kr/upload/pfmPoster/PF_PF137198_170427_142223.gif";
@@ -38,6 +38,48 @@ public class HelloWorld {
 		       //System.out.println("::::poster::"+poster);
 			
 		//String posterDetail="http://www.kopis.or.kr/upload/pfmIntroImage/PF_PF132236_160704_0226303.jpg";
+		
+		
+		
+		/*!&#33;*/
+
+try {
+	
+	String str="가**나도(주식회사)우+리+가!  우리#사$  이건' 모' \"야";
+	System.out.println(UnicodeChage(str));
+	
+} catch (Exception e) {
+	System.out.println("::e::"+e);
+	// TODO: handle exception
+}
+		
+		
+	}
+	
+	private static String UnicodeChage(String str){
+		
+		String	chTitle=str.replaceAll("!","&#33");
+				chTitle=chTitle.replaceAll("\"","&#34");
+				chTitle=chTitle.replaceAll("#","&#35");
+				chTitle=chTitle.replaceAll("$","&#36");
+				chTitle=chTitle.replaceAll("%","&#37");
+				chTitle=chTitle.replaceAll("&","&#38");
+				chTitle=chTitle.replaceAll("'","&#39");
+				chTitle=chTitle.replaceAll("\\(","&#40");
+				chTitle=chTitle.replaceAll("\\)","&#41");
+				chTitle=chTitle.replaceAll("\\*","&#42");
+				chTitle=chTitle.replaceAll("\\+","&#43");
+				chTitle=chTitle.replaceAll(",","&#44");
+				chTitle=chTitle.replaceAll("-","&#45");
+				chTitle=chTitle.replaceAll("/","&#47");
+				chTitle=chTitle.replaceAll(":","&#58");
+				chTitle=chTitle.replaceAll(";","&#59");
+				chTitle=chTitle.replaceAll("<","&#60");
+				chTitle=chTitle.replaceAll("=","&#61");
+				chTitle=chTitle.replaceAll(">","&#62");
+				chTitle=chTitle.replaceAll("?","&#63");
+				
+		return chTitle;
 	}
 	
 	/**

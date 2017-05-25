@@ -449,8 +449,49 @@ public class KopisApiExplorer {
 			}
 		 
 		 return sb.toString();
-		
 	}
+	 
+	 public static String  getGenreCode(String genrenm) {
+		 
+		 String codeValue="";
+		 
+		 if(genrenm.equals("연극")||genrenm.equals("뮤지컬")){
+			 codeValue="1";
+		 }else if(genrenm.equals("무용")||genrenm.equals("발레")){
+			 codeValue="5";
+		 }else if(genrenm.equals("오페라")||genrenm.equals("클래식")||genrenm.equals("국악")){
+			 codeValue="2";
+		  }else{
+			 codeValue="1";
+		 }	 
+		 return codeValue;
+	}
+	 
+	 public static String getUnicodeChage(String str){
+			
+		 	String	chTitle=str.replaceAll("'","&#39");
+		 			/*chTitle=chTitle.replaceAll("!","&#33");
+					chTitle=chTitle.replaceAll("\"","&#34");
+					chTitle=chTitle.replaceAll("#","&#35");
+					chTitle=chTitle.replaceAll("$","&#36");
+					chTitle=chTitle.replaceAll("%","&#37");
+					chTitle=chTitle.replaceAll("&","&#38");
+					chTitle=chTitle.replaceAll("\\(","&#40");
+					chTitle=chTitle.replaceAll("\\)","&#41");
+					chTitle=chTitle.replaceAll("\\*","&#42");
+					chTitle=chTitle.replaceAll("\\+","&#43");
+					chTitle=chTitle.replaceAll(",","&#44");
+					chTitle=chTitle.replaceAll("-","&#45");
+					chTitle=chTitle.replaceAll("/","&#47");
+					chTitle=chTitle.replaceAll(":","&#58");
+					chTitle=chTitle.replaceAll(";","&#59");
+					chTitle=chTitle.replaceAll("<","&#60");
+					chTitle=chTitle.replaceAll("=","&#61");
+					chTitle=chTitle.replaceAll(">","&#62");
+					chTitle=chTitle.replaceAll("?","&#63");*/
+			return chTitle;
+		}
+		
 		
 	
 }// class end
