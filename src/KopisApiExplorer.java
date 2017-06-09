@@ -87,10 +87,11 @@ public class KopisApiExplorer {
 //			System.out.println("::::c_page:::"+c_page+":::shprfnmfct:::"+shprfnmfct);
 		
 			String serviceKey=getProperty("serviceKey");// serviceKey 인증키
+			String[] SEdate = DataUtil.SEdate().split(":");
 			
 			StringBuilder urlBuilder = new StringBuilder("http://www.kopis.or.kr/openApi/restful/pblprfr"); 
 	        urlBuilder.append("?service="+serviceKey+""); /*Service Key*/
-	        urlBuilder.append("&stdate=20170501&eddate=20170531&cpage="+c_page+"&rows=20&prfstate="+state+"");
+	        urlBuilder.append("&stdate="+SEdate[0]+"&eddate="+SEdate[1]+"&cpage="+c_page+"&rows=20&prfstate="+state+"");
 	        urlBuilder.append("&shprfnmfct="+ URLEncoder.encode(shprfnmfct,"UTF-8") );
 	        URL url = new URL(urlBuilder.toString());
 	        System.out.println(":::xml:::"+urlBuilder.toString());
@@ -347,9 +348,10 @@ public class KopisApiExplorer {
 		
 		 
 //		 String localPath=ImagSaveDir;
-		 String localPath=getProperty("ImageSaveDir");
+		/* String localPath=getProperty("ImageSaveDir");*/
+		 String localPath=DataUtil.MkFileDir();
 		 
-		 System.out.println(":::::::::localPath_ImageRead:::::"+localPath);
+//		 System.out.println(":::::::::localPath_ImageRead:::::"+localPath);
 		
 		try{
 	
@@ -377,7 +379,8 @@ public class KopisApiExplorer {
 		    
 		    
 //			String localPath=ImagSaveDir;
-			String localPath=getProperty("ImageSaveDir");
+			/*String localPath=getProperty("ImageSaveDir");*/
+			String localPath=DataUtil.MkFileDir();
 			
 			System.out.println(":::::::::localPath_EtcImageWrite:::::"+localPath);
 			
@@ -403,8 +406,8 @@ public class KopisApiExplorer {
 //		    System.out.println("::ffa::"+file.getName());
 		    
 		    
-			String localPath=getProperty("ImageSaveDir");
-//			String localPath=ImagSaveDir;
+//			String localPath=getProperty("ImageSaveDir");
+			String localPath=DataUtil.MkFileDir();
 			
 			System.out.println(":::::::::localPath_EtcImageWriteConent:::::"+localPath);
 			
@@ -424,7 +427,8 @@ public class KopisApiExplorer {
 	 
 	 public static String  TagImageSrc(String imgUrl) {
 		 	 
-		     String cultureUrl=getProperty("cultureSaveUrl");
+		     /*String cultureUrl=getProperty("cultureSaveUrl");*/
+		     String cultureUrl=DataUtil.cultureSaveUrl();
 		     String kopisPosterstyurl=getProperty("kopisPosterstyurl");
 		    		 
 		 	 String[] iUrl=null;

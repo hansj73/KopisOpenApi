@@ -140,12 +140,13 @@ public class KopisApiBatchThread extends KopisApiBatch{
 
         long startTime = System.currentTimeMillis();
         Thread t = new Thread(new MessageLoop()); // 공영예정 thread
-        Thread t1 = new Thread(new MessageLoop1()); // 공영예정 thread
+        Thread t1 = new Thread(new MessageLoop1()); // 공영중 thread
         t.start();
         //t1.start();
        
         System.out.println("t.isAli ve()::"+t.isAlive());
         while (t.isAlive()) {
+        	System.out.println("t.start::공연예정 시작");
             threadMessage("Still waiting...t.thread.. ");
             t.join(5000); // 5초
             if (((System.currentTimeMillis() - startTime) > patience) && t.isAlive()) {
@@ -156,12 +157,13 @@ public class KopisApiBatchThread extends KopisApiBatch{
             
            if(t.isAlive()==false) {
         	   t1.start();
-        	   System.out.println("t1.start");
+        	   System.out.println("t1.start::");
         	   }
         }
         
         while (t1.isAlive()) {
             threadMessage("Still waiting...t1.thread.. ");
+            System.out.println("t1.start::공연중 시작");
             t1.join(5000); // 5초
             if (((System.currentTimeMillis() - startTime) > patience) && t1.isAlive()) {
                 threadMessage("Tired of waiting!");

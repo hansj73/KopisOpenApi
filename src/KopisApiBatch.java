@@ -115,13 +115,17 @@ public class KopisApiBatch {
               	
     		    /** post url 변경 에 입력***/
               	
-              	String cultureUrl=getProperty("cultureSaveUrl");
+              	/*String cultureUrl=getProperty("cultureSaveUrl");*/
+              	String cultureUrl=DataUtil.cultureSaveUrl();
               	String kopisPosterUrl=getProperty("kopisPosterUrl");
               	
               	String posterUrl=Api_detail.get(0).getPoster().replaceAll(kopisPosterUrl, cultureUrl);
               	
               	/** 장르 코드변환***/
               	String genreCode=KopisApiExplorer.getGenreCode(Api_detail.get(0).getGenrenm()); // 장르 코드 분류추가 
+              	
+              	/**uci**/
+            	long uci_time = System.currentTimeMillis();
               			
               	sb.append("INSERT INTO OPENAPI_METADATA");
               	sb.append("(");
@@ -130,16 +134,16 @@ public class KopisApiBatch {
               	sb.append(",EXTENT,DESCRIPTION,RIGHTS");
               	sb.append(",GRADE,CHARGE,VENUE");
               	sb.append(",PERIOD,TIME,REFERENCE_IDENTIFIER_ORG");
-              	sb.append(",APPROVAL,GENRE");
+              	sb.append(",APPROVAL,GENRE,UCI");
               	sb.append(")");
               	sb.append("VALUES");
               	sb.append("(");
-              	sb.append("OPENAPI_METADATA_SEQUENCE.NEXTVAL,'"+title+"','"+mt20id+"'");
+              	sb.append("EVENT_FASTIVAL_SEQ.NEXTVAL,'"+title+"','"+mt20id+"'");
               	sb.append(",sysdate,sysdate,'06'");
               	sb.append(",'"+Api_detail.get(0).getPrfruntime()+"','"+description+"','"+Api_detail.get(0).getEntrpsnm()+"'");
               	sb.append(",'"+Api_detail.get(0).getPrfage()+"','"+Api_detail.get(0).getPcseguidance()+"','"+Api_detail.get(0).getFcltynm()+"'");
               	sb.append(",'"+period+"','"+Api_detail.get(0).getDtguidance()+"','"+posterUrl+"'");
-              	sb.append(",'W','"+genreCode+"')");
+              	sb.append(",'W','"+genreCode+"','G706"+uci_time+"')");
                           	  
               	/*System.out.println("::SQL:::"+sb.toString());*/
               	stmt.executeUpdate(sb.toString());
