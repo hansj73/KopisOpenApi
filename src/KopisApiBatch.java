@@ -1,15 +1,14 @@
 
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Properties;
+
+import org.apache.log4j.Logger;
 
 public class KopisApiBatch {
 	static Connection con;
@@ -19,12 +18,14 @@ public class KopisApiBatch {
     //static final String propFile = "G:/study/workspace/KopisOpenApi/config/config.properties";
 //    static final String propFile = "/data/script/kopisApi/config";
     
+    private static final Logger logger = Logger.getLogger(KopisApiBatch.class);
+    
     /** 
      * config 파일 load 
      * @param keyName
      * @return
      */
-    private static String getProperty(String keyName) {
+   /* private static String getProperty(String keyName) {
         String value = null;
        
         try {
@@ -40,7 +41,7 @@ public class KopisApiBatch {
 //            System.out.println(e.toString());
         }
             return value;
-    }
+    }*/
     
 
     public static void  DbDriverLoad()
@@ -63,10 +64,10 @@ public class KopisApiBatch {
             //커넥션을 가져온다.
         	
         	   
-        	 	String driverClass = getProperty("driverClassName") ;
-	            String url = getProperty("url") ;
-	            String username =getProperty("username") ;
-	            String password= getProperty("password") ;
+        	 	String driverClass = DataUtil.getProperty("driverClassName") ;
+	            String url = DataUtil.getProperty("url") ;
+	            String username =DataUtil.getProperty("username") ;
+	            String password= DataUtil.getProperty("password") ;
 	            
 	            // 콘솔 출력
 //	            System.out.println(driverClass+":"+url+":"+username+":"+password) ;
@@ -81,10 +82,12 @@ public class KopisApiBatch {
     
     
         
-    public  static void getData(String mt20id,String shprfnmfct) throws IOException
+    public  static boolean getData(String mt20id,String shprfnmfct) throws IOException
     {
     	  String Detail_apiXml="";
     	  StringBuffer sb = new StringBuffer();
+    	  
+    	 boolean inTrue=false;
     	  
     	  try{
            	stmt = con.createStatement();
@@ -117,7 +120,7 @@ public class KopisApiBatch {
               	
               	/*String cultureUrl=getProperty("cultureSaveUrl");*/
               	String cultureUrl=DataUtil.cultureSaveUrl();
-              	String kopisPosterUrl=getProperty("kopisPosterUrl");
+              	String kopisPosterUrl=DataUtil.getProperty("kopisPosterUrl");
               	
               	String posterUrl=Api_detail.get(0).getPoster().replaceAll(kopisPosterUrl, cultureUrl);
               	
@@ -148,6 +151,7 @@ public class KopisApiBatch {
               	/*System.out.println("::SQL:::"+sb.toString());*/
               	stmt.executeUpdate(sb.toString());
               	
+              	inTrue=true;
               	try {
 					KopisApiExplorer.ImageRead(Api_detail.get(0).getPoster());
 				} catch (Exception e) {
@@ -155,15 +159,15 @@ public class KopisApiBatch {
 					e.printStackTrace();
 				}
               	
-              	System.out.println("파일 입력 및 이미지 저장 완료");
+              	//System.out.println("파일 입력 및 이미지 저장 완료");
               }
             	else if(cnt>0)
             	{
-            		System.out.println("등록되어 있습니다.");
+            		//System.out.println("등록되어 있습니다.");
             	}
             	else
             	{
-            		System.out.println(":::error_msg::"+cnt);
+            		//System.out.println(":::error_msg::"+cnt);
             	}
               
             
@@ -171,6 +175,7 @@ public class KopisApiBatch {
               e.printStackTrace();
               System.out.println("::e::"+e);
           }
+    	  return inTrue;
         
     }
      
@@ -191,6 +196,8 @@ public class KopisApiBatch {
     public static int  ApiMain(int s_num,String shprfnmfct,String state) 
     {
 		// TODO Auto-generated method stub
+    	boolean inTrue=false;
+    	int inTrueCnt=0;
 		KopisApiExplorer kopisEx = new KopisApiExplorer();
 		
 		ArrayList<KopisApiDto> Api_list = (ArrayList<KopisApiDto>) kopisEx.getKopisList(s_num,shprfnmfct,state);
@@ -203,11 +210,14 @@ public class KopisApiBatch {
 		 
 		 for(int i=0; i<Api_list.size(); i++){
 			 try {
-				getData(Api_list.get(i).getMt20id(),shprfnmfct);
+				 inTrue=getData(Api_list.get(i).getMt20id(),shprfnmfct);
+				 if(inTrue==true)inTrueCnt=inTrueCnt+1;
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		 }
+		 
+		 logger.debug(":::insert 갯수:::"+inTrueCnt);
 		 
 		 if(list_cnt >0 ){
 			  closeConnection();

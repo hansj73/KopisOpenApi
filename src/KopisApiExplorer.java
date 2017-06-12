@@ -24,6 +24,7 @@ import java.io.UnsupportedEncodingException;
 
 import javax.imageio.ImageIO;
 
+import org.apache.log4j.Logger;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -38,8 +39,10 @@ public class KopisApiExplorer {
      * @param keyName
      * @return
      */
+	
+	private static final Logger logger = Logger.getLogger(KopisApiExplorer.class);
     
-	 private static String getProperty(String keyName) {
+	/* private static String getProperty(String keyName) {
 	        String value = null;
 	       
 	        try {
@@ -55,7 +58,7 @@ public class KopisApiExplorer {
 //	            System.out.println(e.toString());
 	        }
 	            return value;
-	    }
+	    }*/
 	 
     
 	 public  ArrayList<KopisApiDto> getKopisList(int c_page,String shprfnmfct,String state)
@@ -86,7 +89,7 @@ public class KopisApiExplorer {
 		       
 //			System.out.println("::::c_page:::"+c_page+":::shprfnmfct:::"+shprfnmfct);
 		
-			String serviceKey=getProperty("serviceKey");// serviceKey 인증키
+			String serviceKey=DataUtil.getProperty("serviceKey");// serviceKey 인증키
 			String[] SEdate = DataUtil.SEdate().split(":");
 			
 			StringBuilder urlBuilder = new StringBuilder("http://www.kopis.or.kr/openApi/restful/pblprfr"); 
@@ -94,7 +97,7 @@ public class KopisApiExplorer {
 	        urlBuilder.append("&stdate="+SEdate[0]+"&eddate="+SEdate[1]+"&cpage="+c_page+"&rows=20&prfstate="+state+"");
 	        urlBuilder.append("&shprfnmfct="+ URLEncoder.encode(shprfnmfct,"UTF-8") );
 	        URL url = new URL(urlBuilder.toString());
-	        System.out.println(":::xml:::"+urlBuilder.toString());
+	        //System.out.println(":::xml:::"+urlBuilder.toString());
 	        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 	        conn.setRequestMethod("GET");
 	        conn.setRequestProperty("Content-type", "application/xml");
@@ -124,7 +127,7 @@ public class KopisApiExplorer {
 	 */
 	public  static  String apiDataDetail(String mt20id) throws IOException{
 		
-		String serviceKey=getProperty("serviceKey");// serviceKey 인증키
+		String serviceKey=DataUtil.getProperty("serviceKey");// serviceKey 인증키
 		
 		StringBuilder urlBuilder = new StringBuilder("http://www.kopis.or.kr/openApi/restful/pblprfr/"); 
         urlBuilder.append(mt20id+"?service="+serviceKey+""); /*Service Key*/
@@ -382,7 +385,7 @@ public class KopisApiExplorer {
 			/*String localPath=getProperty("ImageSaveDir");*/
 			String localPath=DataUtil.MkFileDir();
 			
-			System.out.println(":::::::::localPath_EtcImageWrite:::::"+localPath);
+			/*System.out.println(":::::::::localPath_EtcImageWrite:::::"+localPath);*/
 			
 		    FileOutputStream in = new FileOutputStream(localPath+"/"+file.getName());		  
 		    URL url = new URL(targetUrl);
@@ -409,7 +412,7 @@ public class KopisApiExplorer {
 //			String localPath=getProperty("ImageSaveDir");
 			String localPath=DataUtil.MkFileDir();
 			
-			System.out.println(":::::::::localPath_EtcImageWriteConent:::::"+localPath);
+			/*System.out.println(":::::::::localPath_EtcImageWriteConent:::::"+localPath);*/
 			
 			
 		    FileOutputStream in = new FileOutputStream(localPath+"/"+file.getName());
@@ -422,14 +425,14 @@ public class KopisApiExplorer {
 		    }
 		    in.close();
 		 
-		 System.out.println("::::EtcImageWriteConent::"+targetUrl);
+		 /*System.out.println("::::EtcImageWriteConent::"+targetUrl);*/
 	 }
 	 
 	 public static String  TagImageSrc(String imgUrl) {
 		 	 
 		     /*String cultureUrl=getProperty("cultureSaveUrl");*/
 		     String cultureUrl=DataUtil.cultureSaveUrl();
-		     String kopisPosterstyurl=getProperty("kopisPosterstyurl");
+		     String kopisPosterstyurl=DataUtil.getProperty("kopisPosterstyurl");
 		    		 
 		 	 String[] iUrl=null;
 		 	 StringBuffer sb = new StringBuffer();

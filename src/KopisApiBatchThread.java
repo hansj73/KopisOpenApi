@@ -1,11 +1,13 @@
 
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.Properties;
+
+import org.apache.log4j.Logger;
+import org.apache.log4j.xml.DOMConfigurator;
+
 
 public class KopisApiBatchThread extends KopisApiBatch{
          
@@ -15,9 +17,11 @@ public class KopisApiBatchThread extends KopisApiBatch{
 	 * config 파일 load
 	 */
 	
+	private static final Logger logger = Logger.getLogger(KopisApiBatchThread.class);
+	
 	private static String OS = System.getProperty("os.name").toLowerCase();
 
-	 private static String getProperty(String keyName) {
+/*	 private static String getProperty(String keyName) {
 	        String value = null;
 	       
 	        try {
@@ -32,7 +36,7 @@ public class KopisApiBatchThread extends KopisApiBatch{
 	            fis.close();        } catch (java.lang.Exception e) {
 	        }
 	            return value;
-	    }
+	    }*/
 
     static void threadMessage(String message) {
         String threadName =Thread.currentThread().getName();
@@ -50,9 +54,9 @@ public class KopisApiBatchThread extends KopisApiBatch{
         	 String[] importantInfo = null;
         	 try {
         		 if(OS.indexOf("win") >= 0){
-        			 importantInfo = getProperty("artOrgName").split(",");
+        			 importantInfo = DataUtil.getProperty("artOrgName").split(",");
         		 }else{
-        			 importantInfo = new String(getProperty("artOrgName").getBytes("ISO-8859-1"), "UTF-8").split(",");
+        			 importantInfo = new String(DataUtil.getProperty("artOrgName").getBytes("ISO-8859-1"), "UTF-8").split(",");
         		 }
 			} catch (UnsupportedEncodingException e1) {
 				// TODO Auto-generated catch block
@@ -71,15 +75,17 @@ public class KopisApiBatchThread extends KopisApiBatch{
             			 int list_size= KopisApiBatch.ApiMain(j,shprfnmfct,"01");
             			 /*DbConnTest.ApiMain(j++);*/
             			 /*threadMessage("DbConnTest.getConnection()");*/
-            			 System.out.println("::pageCnt::"+j+"::::::"+shprfnmfct);
-            			 if(list_size ==0){System.out.println(":::list_size_break::");break;}// if --end
+//            			 System.out.println("::pageCnt::"+j+"::::::"+shprfnmfct);
+            			 logger.debug("::pageCnt::"+j+"::::::"+shprfnmfct+":::공연예정::");
+            			 if(list_size ==0){/*System.out.println(":::list_size_break::");*/break;}// if --end
             			 j++;
             		 }// for end
             			j=1;
             	 }//for end
           
             } catch (InterruptedException e) {
-            	System.out.println("::::SimpleThreads::run::error::"+e);
+//            	System.out.println("::::SimpleThreads::run::error::"+e);
+            	 logger.debug("::::SimpleThreads::run::error::"+e);
             }
         	
         }
@@ -95,9 +101,9 @@ public class KopisApiBatchThread extends KopisApiBatch{
         	 String[] importantInfo = null;
         	 try {
         		 if(OS.indexOf("win") >= 0){
-        			 importantInfo = getProperty("artOrgName").split(",");
+        			 importantInfo = DataUtil.getProperty("artOrgName").split(",");
         		 }else{
-        			 importantInfo = new String(getProperty("artOrgName").getBytes("ISO-8859-1"), "UTF-8").split(",");
+        			 importantInfo = new String(DataUtil.getProperty("artOrgName").getBytes("ISO-8859-1"), "UTF-8").split(",");
         		 }
 			} catch (UnsupportedEncodingException e1) {
 				// TODO Auto-generated catch block
@@ -116,8 +122,10 @@ public class KopisApiBatchThread extends KopisApiBatch{
             			 int list_size= KopisApiBatch.ApiMain(j,shprfnmfct,"02");
             			 /*DbConnTest.ApiMain(j++);*/
             			 /*threadMessage("DbConnTest.getConnection()");*/
-            			 System.out.println("::pageCnt::"+j+"::::::"+shprfnmfct);
-            			 if(list_size ==0){System.out.println(":::list_size_break::");break;}// if --end
+//            			 System.out.println("::pageCnt::"+j+"::::::"+shprfnmfct);
+            			 logger.debug("::pageCnt::"+j+"::::::"+shprfnmfct+":::공연중::");
+//            			 "::::SimpleThreads::run::error::"+e
+            			 if(list_size ==0){/*System.out.println(":::list_size_break::");*/break;}// if --end
             			 j++;
             		 }// for end
             			j=1;
@@ -131,6 +139,9 @@ public class KopisApiBatchThread extends KopisApiBatch{
     }
 
     public static void main(String args[]) throws InterruptedException {
+    	
+    	
+    	 DOMConfigurator.configure(DataUtil.getLogProperty());
 
         long patience = 1000 * 60 * 60;
       

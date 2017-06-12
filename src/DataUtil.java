@@ -35,6 +35,16 @@ public class DataUtil {
 	            return value;
 	    }
 	 
+	 public static String getLogProperty() {
+	        String value = "";
+	        try {
+	        	ClassLoader cl=ClassLoader.getSystemClassLoader();
+	            URL url = cl.getResource( "log4j.xml" );
+	            value=url.getPath();
+	        }catch(Exception e){}
+	            return value;
+	    }
+	 
 	 public static String getUnicodeChage(String str){
 			
 		 	String	chTitle=str.replaceAll("'","&#39");
