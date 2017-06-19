@@ -12,7 +12,8 @@
     <!--  날짜별 로그 -->  
     <appender name="dailyout" class="org.apache.log4j.DailyRollingFileAppender">  
         <!-- 이것은 날짜별로  로그를 남김. 파일명.확장자.DatePattern으로 정의 함-->  
-        <param name="file" value="G:/study/workspace/KopisOpenApi/logs/KopisOpenApilog.log"/>  
+       <param name="file" value="G:/study/workspace/KopisOpenApi/logs/KopisOpenApilog.log"/>  
+        <!-- <param name="file" value="/data/script/KopisOpenApi/logs/KopisOpenApilog.log"/> -->  
         <param name="Append" value="true"/>  
         <param name="DatePattern" value="'.'yy-MM-dd"/>  
         <layout class="org.apache.log4j.PatternLayout">  
