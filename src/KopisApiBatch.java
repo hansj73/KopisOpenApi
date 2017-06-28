@@ -94,8 +94,9 @@ public class KopisApiBatch {
               //데이터를 가져온다.
            	/**
            	 * type 06  공연
+           	 * OPENAPI_METADATA -- 테스트 테이블
            	 */
-           	rs = stmt.executeQuery("select count(*) count from OPENAPI_METADATA where sub_title='"+mt20id+"' and type='06'");
+           	rs = stmt.executeQuery("select count(*) count from PCN_RDF_METADATA where sub_title='"+mt20id+"' and type='06'");
               
               int cnt=(rs.next()==true)?rs.getInt("count"):-1;
               
@@ -130,7 +131,7 @@ public class KopisApiBatch {
               	/**uci**/
             	long uci_time = System.currentTimeMillis();
               			
-              	sb.append("INSERT INTO OPENAPI_METADATA");
+              	sb.append("INSERT INTO PCN_RDF_METADATA");
               	sb.append("(");
               	sb.append("SEQ,TITLE,SUB_TITLE");
               	sb.append(",REG_DATE,CREATED_DATE,TYPE");

@@ -198,7 +198,8 @@ public static void EtcImageWriteConent(String targetUrl,String localPath)throws 
 		  String month=strToday.substring(2,4);
 		  
 		  /*String imageSubDir="/"+year+"/"+month+"/"+DataUtil.getProperty("cat2");*/
-		  String imageSubDir="/"+year+"/"+month+"/";
+//		  String imageSubDir="/"+year+"/"+month+"/";
+		  String imageSubDir=year+"/"+month+"/kopis";
 		  
 		  String ImageSaveDir=DataUtil.getProperty("ImageSaveDir")+imageSubDir; //
 			 
@@ -224,8 +225,25 @@ public static void EtcImageWriteConent(String targetUrl,String localPath)throws 
 		  String month=strToday.substring(2,4);
 		  
 		  /*String imageSubDir="/"+year+"/"+month+"/"+DataUtil.getProperty("cat2");*/
-		  String imageSubDir="/"+year+"/"+month+"/";
+		 // String imageSubDir="/"+year+"/"+month+"/";
+		  String imageSubDir=year+"/"+month+"/kopis/";
 		  String cultureSaveUrl=DataUtil.getProperty("cultureSaveUrl")+imageSubDir; //
+		  return cultureSaveUrl;
+	}
+	
+	public static String contentSaveUrl(){
+	    
+	      SimpleDateFormat sdf = new SimpleDateFormat("yyMM");
+	      Calendar c1 = Calendar.getInstance();
+		  String strToday = sdf.format(c1.getTime());
+		  
+		  String year=strToday.substring(0,2);
+		  String month=strToday.substring(2,4);
+		  
+		  /*String imageSubDir="/"+year+"/"+month+"/"+DataUtil.getProperty("cat2");*/
+		 // String imageSubDir="/"+year+"/"+month+"/";
+		  String imageSubDir=year+"/"+month+"/kopis/";
+		  String cultureSaveUrl=DataUtil.getProperty("contentSaveUrl")+imageSubDir; //
 		  return cultureSaveUrl;
 	}
 	
@@ -242,13 +260,16 @@ public static void EtcImageWriteConent(String targetUrl,String localPath)throws 
 		  String year=strToday.substring(0,2);
 		  String month=strToday.substring(2,4);
 		  
-		  String imageSubDir="/"+year+"/"+month+"/"+DataUtil.getProperty("cat2");
+		 // String imageSubDir="/"+year+"/"+month+"/"+DataUtil.getProperty("cat2");
+		  String imageSubDir="/"+year+"/"+month+"/";
 		  
 		  String[] ff=firstImageUrlThum.replaceAll(DataUtil.getProperty("firstImageUrl2")+"/", "").split("/");
 		  
 		  String firstImagerUrl2=DataUtil.getProperty("firstImageUrl2"); // 썸네일이미지
 		  String cultureUrl=DataUtil.getProperty("cultureSaveUrl")+imageSubDir;
 		  	
+		  System.out.println(":::::cultureUrl::::"+cultureUrl);
+		  
 		  firstImageUrlThum=firstImageUrlThum.replaceAll(firstImagerUrl2+"/"+ff[0], cultureUrl);
 		  	
 		     

@@ -431,7 +431,8 @@ public class KopisApiExplorer {
 	 public static String  TagImageSrc(String imgUrl) {
 		 	 
 		     /*String cultureUrl=getProperty("cultureSaveUrl");*/
-		     String cultureUrl=DataUtil.cultureSaveUrl();
+//		     String cultureUrl=DataUtil.cultureSaveUrl();
+		     String cultureUrl=DataUtil.contentSaveUrl();
 		     String kopisPosterstyurl=DataUtil.getProperty("kopisPosterstyurl");
 		    		 
 		 	 String[] iUrl=null;
